@@ -12,13 +12,13 @@ import java.util.Random;
 public class RouterApi {
 
     public void init(@Observes Router router) {
-        // filter - ship header
+        // filter - ship header - can add reactive filters to Spring easily - but this is not declarative
         router.get().handler(rc -> {
             rc.response().putHeader("X-Ship", getShip());
             rc.next();
         });
 
-        // /aye -> Sail, Ho!
+        // /aye -> Sail, Ho! - programmatic, get response on same server running Spring 8080
         router.get("/aye").handler(rc -> rc.response().end("Sail, Ho! " + Thread.currentThread().getName()));
 
     }

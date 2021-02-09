@@ -28,6 +28,8 @@ public class QuoteApi {
 
     // GET /chantey
     @Route(methods = HttpMethod.GET, path = "/chantey")
+    //Uni like a future, is a reactive type, get reply in async fashion
+    //transform extracts the quote from the gRPC request
     public Uni<String> getQuote() {
         return quotes.getRandomQuote(QuoteRequest.newBuilder().build())
                 .onItem().transform(qr -> qr.getQuote());
@@ -35,6 +37,7 @@ public class QuoteApi {
 
     // GET /chanteys - sse
     @Route(methods = HttpMethod.GET, path = "/chanteys")
+    //Multi returns a set of objects
     public Multi<String> getQuotes() {
         return ReactiveRoutes.asJsonArray(Multi.createFrom().range(0, 3)
                 .onItem().transformToUniAndConcatenate(i -> getQuote()));
